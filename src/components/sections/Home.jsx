@@ -10,9 +10,9 @@ export const Home = () => {
             </h1>
 
         <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">
-            I’m a senior at Johns Hopkins University majoring in Computer Science and minoring in Marketing and Communications. 
+            I’m a senior at Johns Hopkins University majoring in Computer Science. 
             I'm passionate about web and app development, and I enjoy building creative, user-focused digital experiences. 
-            Outside of code, I enjoy reading, 3D printing, and building legos.     
+            Outside of code, I enjoy reading, 3D printing, building legos, and watching movies.     
         </p>
         <div className="flex justify-center space-x-4">
             <a

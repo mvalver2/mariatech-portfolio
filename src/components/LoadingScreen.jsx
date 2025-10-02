@@ -1,36 +1,54 @@
-import { useEffect } from "react";
-import { useState } from "react"
+import { useEffect, useState } from "react";
 
 export const LoadingScreen = ({ onComplete }) => {
-    const [text, setText] = useState("")
-    const fullText = "<Hello World/>";
+  const [text, setText] = useState("");
+  const [show, setShow] = useState(false);
 
-    useEffect(()=> {
-        let index = 0;
-        const interval = setInterval(()=>{
-            setText(fullText.substring(0, index))
-            index++;
+  const fullText = "<Hello World/>";
 
-            if (index > fullText.length) {
-                clearInterval(interval)
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisited");
 
-                setTimeout(()=> {
-                    onComplete();
-                }, 1000);
-            }
-        }, 100)
+    if (!hasVisited) {
+      setShow(true);
+      localStorage.setItem("hasVisited", "true");
+    } else {
+      onComplete(); 
+    }
+  }, [onComplete]);
 
-        return () => clearInterval(interval);
-    },[onComplete] );
+  useEffect(() => {
+    if (!show) return;
 
-    return <div className="fixed inset-0 z-50 bg-black text-gray-100 flex flex-col items-center justify-center">
-<div className="mb-4 text-4xl font-mono font-bold">{text}<span className="animate-blink ml-1">   </span>
-</div>
+    let index = 0;
+    const interval = setInterval(() => {
+      setText(fullText.substring(0, index));
+      index++;
 
-    <div className="w-[200px] h-[2px] bg-gray-800 rounded relative overflow-hidden">
-        <div className="w-[40%] h-full bg-blue-500 shadow-[0_0_15px_#3b82f6] animate-loading-bar">
+      if (index > fullText.length) {
+        clearInterval(interval);
 
-        </div>
+        setTimeout(() => {
+          onComplete();
+        }, 1000);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [show, onComplete]);
+
+  if (!show) return null; // don’t render if not needed
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black text-gray-100 flex flex-col items-center justify-center">
+      <div className="mb-4 text-4xl font-mono font-bold">
+        {text}
+        <span className="animate-blink ml-1"> </span>
+      </div>
+
+      <div className="w-[200px] h-[2px] bg-gray-800 rounded relative overflow-hidden">
+        <div className="w-[40%] h-full bg-blue-500 shadow-[0_0_15px_#3b82f6] animate-loading-bar" />
+      </div>
     </div>
-    </div>
-}
+  );
+};
